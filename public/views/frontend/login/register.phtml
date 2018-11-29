@@ -1,0 +1,77 @@
+<ul class="breadcrumb">
+	<li><a href="/">首页</a></li>
+	<li class="active">注册</li>
+</ul>
+<div class="site-signup">
+	<h1>注册</h1>
+	<div class="row">
+		<div class="col-lg-5">
+			<div class="form-group field-signupform-username required">
+				<label class="control-label" for="userName">用户名</label>
+				<input type="text" id="userName" class="form-control" placeholder="英文或者数字，不能小于6个字"
+					name="userName" autofocus aria-required="true">
+
+				<p class="help-block help-block-error"></p>
+			</div>
+			<div class="form-group field-signupform-email required">
+				<label class="control-label" for="email">邮箱</label>
+				<input type="text" id="email" class="form-control" placeholder="邮箱"
+					name="email" aria-required="true">
+
+				<p class="help-block help-block-error"></p>
+			</div>
+			<div class="form-group field-signupform-password required">
+				<label class="control-label" for="password">密码</label>
+				<input type="password" id="password" placeholder="不能小于6个字"
+					class="form-control" name="password"
+					aria-required="true">
+
+				<p class="help-block help-block-error"></p>
+			</div>
+			<div class="form-group">
+				<button type="button" class="btn btn-primary submit"
+					name="signup-button">注册</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$(function(){
+	$('.submit').click(function(){
+		var obj = $(this);
+		obj.attr('disabled', true);
+		obj.text('请求中...');
+		
+		var userName = $('#userName').val();
+		var email    = $('#email').val();
+		var password = $('#password').val();
+		$.ajax({
+			url:"<?=$this->url->get('login/doRegister');?>",
+			data:{'userName':userName, 'email':email, 'password':password},
+			dataType:'json',
+			type:'POST',
+			error:function(){
+				alert('请求失败');
+				return false;
+			},
+			success:function(result){
+				if(result.error_code == 0){
+					alert(result.msg);
+					window.location.href = window.location.href;
+				}else if(result.error_code == 201){
+						alert(result.msg);
+						window.location.href='/index.html';
+						return false;
+				}else{
+					alert(result.msg);
+					return false;
+				}
+			},
+			complete:function(){
+				obj.attr('disabled', false);
+				obj.text('注册');
+			}
+		});
+	});
+});
+</script>
