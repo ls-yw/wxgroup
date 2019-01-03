@@ -8,7 +8,7 @@ class ConfigLogic extends BasicLogic
 {
     public function getConfigs($type, $key='') {
         if(empty($type))return false;
-        $where = ['type' => $type];
+        $where = ['config_type' => $type];
         $configs = (new Config())->getList($where);
         $arr = [];
         if($configs){

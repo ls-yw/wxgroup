@@ -3,17 +3,51 @@ namespace Modules\Frontend\Controllers;
 
 use Basic\BasicController;
 use Logics\MemberLogic;
-use PHPMailer\PHPMailer\PHPMailer;
+use Library\Log;
 
 class LoginController extends BasicController  
 {
     public function indexAction() {
-        $this->view->aaa = 'bbbb';
+        $this->view->topActive = 'm-login';
+    }
+    
+    public function doLoginAction()
+    {
+        $userName = $this->request->getPost('userName', 'string', '');
+        $password = $this->request->getPost('password');
+        
+        if(empty($userName) || strlen($userName) < 6){
+            return $this->ajaxReturn(1, '用户名错误');
+        }
+        
+        if(empty($password) || strlen($password) < 6){
+            return $this->ajaxReturn(2, '密码错误');
+        }
+        
+        $userByUsername = (new MemberLogic())->getMemberByUsername($userName);
+        if(!$userByUsername){
+            return $this->ajaxReturn(3, '用户名或密码错误');
+        }
+        
+        $mpassword = md5(md5($password).$userByUsername['uniqid']);
+        if($mpassword != $userByUsername['password']){
+            return $this->ajaxReturn(3, '用户名或密码错误');
+        }
+        
+        $this->session->set('user', $userByUsername);
+        if(!$this->session->has('user')){
+            Log::write('session', 'session设置失败，data:'.json_encode($userByUsername, JSON_UNESCAPED_UNICODE));
+            return $this->ajaxReturn(3, '登录失败，请联系管理员');
+        }
+        
+        (new MemberLogic())->addLogin($userByUsername);
+        
+        return $this->ajaxReturn(0, '登录成功');
     }
     
     public function registerAction()
     {
-        
+        $this->view->topActive = 'm-register';
     }
     
     public function doRegisterAction()
@@ -45,7 +79,7 @@ class LoginController extends BasicController
             return $this->ajaxReturn(3, '该邮箱已存在');
         }
         
-        $uniqid = uniqid('1030', true);
+        $uniqid = uniqid(rand(1000, 9999), true);
         
         $data = [];
         $data['user_name'] = $userName;
@@ -58,42 +92,56 @@ class LoginController extends BasicController
             return $this->ajaxReturn(4, '注册失败，请联系管理员');
         }
         
+        $data['id'] = $uid;
+        $this->session->set('user', $data);
+        
+        (new MemberLogic())->sendActivateEmail($data, $this->systemConfig['host']);
+        
         return $this->ajaxReturn(0, '注册成功，请去激活邮箱');
+    }
+    
+    public function emailAction()
+    {
+        if(!$this->user){
+            return $this->response->redirect($this->url->get('login/index'));
+        }
+        
+        if(isset($this->user['email_status']) && $this->user['email_status'] != 0){
+            return $this->response->redirect($this->url->get('member/index'));
+        }
     }
     
     public function sendEmailAction()
     {
-        $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
-        try {
-            //Server settings
-            $mail->SMTPDebug = 2;                                 // Enable verbose debug output
-            $mail->isSMTP();                                      // Set mailer to use SMTP
-            $mail->Host = 'smtp.qq.com';  // Specify main and backup SMTP servers
-            $mail->SMTPAuth = true;                               // Enable SMTP authentication
-            $mail->Username = '376580487@qq.com';                 // SMTP username
-            $mail->Password = 'lcdgnkqtfjxhbida';                           // SMTP password
-            $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
-            $mail->Port = 465;                                    // TCP port to connect to
-        
-            //Recipients
-            $mail->setFrom('376580487@qq.com', 'fkz');
-            // 设置收件人邮箱地址
-            $mail->addAddress('405548753@qq.com', 'yls');
-            $mail->addReplyTo('info@example.com', 'Information');
-//             $mail->addCC('cc@example.com');
-//             $mail->addBCC('bcc@example.com');
-        
-            //Content
-            $mail->isHTML(true);                                  // Set email format to HTML
-            $mail->Subject = 'Here is the subject';
-            $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
-            $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-        
-            $mail->send();
-            echo 'Message has been sent';
-            exit;
-        } catch (\Exception $e) {
-            echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
+        if(!$this->user){
+            return $this->ajaxReturn(201, '未登录');
         }
+        
+        if(isset($this->user['email_status']) && $this->user['email_status'] != 0){
+            return $this->ajaxReturn(202, '已激活，请勿重复激活');
+        }
+        $res = (new MemberLogic())->sendActivateEmail($this->user, $this->systemConfig['host']);
+        return $res ? $this->ajaxReturn(0, '发送成功') : $this->ajaxReturn(1, '发送失败，请联系管理员');
+    }
+    
+    public function activateAction()
+    {
+        $token = $this->request->getQuery('token', 'string');
+        if($token && $this->session->has($token)){
+            $user = $this->session->get($token);
+            $row = (new MemberLogic())->activateEmail($user, $token);
+            if($row){
+                return $this->response->redirect($this->url->get('member/index'));
+            }else{
+                $this->view->msg = '激活失败，请联系管理员。';
+            }
+        }
+        $this->view->msg = '该邮箱验证链接已失效。';
+    }
+    
+    public function logoutAction()
+    {
+        $this->session->remove('user');
+        return $this->response->redirect($this->url->get('index/index'));
     }
 }

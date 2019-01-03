@@ -1,77 +1,109 @@
-<ul class="breadcrumb">
-	<li><a href="/">首页</a></li>
-	<li class="active">注册</li>
-</ul>
-<div class="site-signup">
-	<h1>注册</h1>
-	<div class="row">
-		<div class="col-lg-5">
-			<div class="form-group field-signupform-username required">
-				<label class="control-label" for="userName">用户名</label>
-				<input type="text" id="userName" class="form-control" placeholder="英文或者数字，不能小于6个字"
-					name="userName" autofocus aria-required="true">
-
-				<p class="help-block help-block-error"></p>
-			</div>
-			<div class="form-group field-signupform-email required">
-				<label class="control-label" for="email">邮箱</label>
-				<input type="text" id="email" class="form-control" placeholder="邮箱"
-					name="email" aria-required="true">
-
-				<p class="help-block help-block-error"></p>
-			</div>
-			<div class="form-group field-signupform-password required">
-				<label class="control-label" for="password">密码</label>
-				<input type="password" id="password" placeholder="不能小于6个字"
-					class="form-control" name="password"
-					aria-required="true">
-
-				<p class="help-block help-block-error"></p>
-			</div>
-			<div class="form-group">
-				<button type="button" class="btn btn-primary submit"
-					name="signup-button">注册</button>
-			</div>
-		</div>
+<div class="layui-col-md12" style="height:40px;line-height:40px;">
+    <span class="layui-breadcrumb" style="visibility: visible;">
+      <a>位置：</a>
+      <a href="/">首页</a>
+      <span lay-separator="">/</span>
+      <a><cite>注册</cite></a>
+    </span>
+</div>
+<div class="c-body layui-col-md12">
+<div class="layui-row">
+	<div class="layui-card-header">注册</div>
+	<div class="layui-card-body layui-row layui-col-space10">
+		<form class="layui-form" action="">
+          <div class="layui-form-item">
+            <label class="layui-form-label">用户名<span class="red">*</span></label>
+            <div class="layui-input-inline">
+              <input type="text" name="userName" id="userName" required  lay-verify="required|username" placeholder="英文和数字，不能小于6个字" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">邮箱<span class="red">*</span></label>
+            <div class="layui-input-inline">
+              <input type="text" name="email" id="email" required  lay-verify="required|email" placeholder="邮箱" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">密码<span class="red">*</span></label>
+            <div class="layui-input-inline">
+              <input type="password" name="password" id="password" required lay-verify="required|pass" placeholder="不能小于6个字" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <div class="layui-input-block">
+              <button class="layui-btn" lay-submit lay-filter="formDemo">注册</button>
+              <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+          </div>
+        </form>
 	</div>
+</div>
+
 </div>
 <script>
 $(function(){
-	$('.submit').click(function(){
-		var obj = $(this);
-		obj.attr('disabled', true);
-		obj.text('请求中...');
-		
-		var userName = $('#userName').val();
-		var email    = $('#email').val();
-		var password = $('#password').val();
-		$.ajax({
-			url:"<?=$this->url->get('login/doRegister');?>",
-			data:{'userName':userName, 'email':email, 'password':password},
-			dataType:'json',
-			type:'POST',
-			error:function(){
-				alert('请求失败');
-				return false;
-			},
-			success:function(result){
-				if(result.error_code == 0){
-					alert(result.msg);
-					window.location.href = window.location.href;
-				}else if(result.error_code == 201){
-						alert(result.msg);
-						window.location.href='/index.html';
-						return false;
-				}else{
-					alert(result.msg);
+	layui.use('form', function(){
+		  var form = layui.form;
+		  
+		  //监听提交
+		  form.on('submit(formDemo)', function(data){
+			var obj = $(this);
+			obj.attr('disabled', true);
+			obj.text('请求中...');
+			
+			var userName = data.field.userName;
+			var password = data.field.password;
+			var email = data.field.email;
+
+			$.ajax({
+				url:"<?=$this->url->get('login/doRegister');?>",
+				data:{'userName':userName, 'email':email, 'password':password},
+				dataType:'json',
+				type:'POST',
+				error:function(){
+					layer.msg('请求失败');
 					return false;
+				},
+				success:function(result){
+					if(result.code == 0){
+						layer.msg(result.msg);
+						window.location.href = "<?=$this->url->get('login/email');?>";
+					}else{
+						layer.msg(result.msg);
+						return false;
+					}
+				},
+				complete:function(){
+					obj.attr('disabled', false);
+					obj.text('注册');
 				}
-			},
-			complete:function(){
-				obj.attr('disabled', false);
-				obj.text('注册');
-			}
+			});
+		    return false;
+		  });
+
+		  form.verify({
+			  username: function(value, item){ //value：表单的值、item：表单的DOM对象
+				if(value.length < 6 || value.length >20){
+					return '用户名必须6到20位';
+				}
+			    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+			      return '用户名不能有特殊字符';
+			    }
+			    if(/(^\_)|(\__)|(\_+$)/.test(value)){
+			      return '用户名首尾不能出现下划线\'_\'';
+			    }
+			    if(/^\d+\d+\d$/.test(value)){
+			      return '用户名不能全为数字';
+			    }
+			  }
+			  
+			  //我们既支持上述函数式的方式，也支持下述数组的形式
+			  //数组的两个值分别代表：[正则匹配、匹配不符时的提示文字]
+			  ,pass: [
+			    /^[\S]{6,12}$/
+			    ,'密码必须6到12位，且不能出现空格'
+			  ] 
+			});  
 		});
-	});
 });
 </script>

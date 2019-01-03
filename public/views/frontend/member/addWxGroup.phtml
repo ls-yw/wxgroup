@@ -1,0 +1,228 @@
+<div class="layui-col-md12" style="height:40px;line-height:40px;">
+    <span class="layui-breadcrumb" style="visibility: visible;">
+      <a>位置：</a>
+      <a href="/">首页</a>
+      <span lay-separator="">/</span>
+      <a>会员中心</a>
+      <span lay-separator="">/</span>
+      <a><cite>发布微信群</cite></a>
+    </span>
+</div>
+<div class="c-body layui-col-md12">
+	<div class="layui-row">
+		<div class="layui-col-md3">
+			<ul class="layui-nav layui-nav-tree layui-bg-cyan" style="width:auto;" id="L_demoNav" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                  <a href="javascript:;">会员中心</a>
+                  <dl class="layui-nav-child">
+                    <dd><a href="<?=$this->url->get('member/index');?>" class="layui-this">微信群列表</a></dd>
+                    <dd><a href="javascript:;">发布微信群</a></dd>
+                  </dl>
+                </li>
+              <span class="layui-nav-bar" style="top: 322.5px; height: 0px; opacity: 0;"></span></ul>
+		</div>
+		<div class="layui-col-md9">
+    		<div class="layui-card-header" style="padding: 0;margin:0 15px;">发布微信群</div>
+        	<div class="layui-card-body layui-row layui-col-space10">
+        		<form class="layui-form" action="">
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">微信群名称</label>
+                    <div class="layui-input-block">
+                      <input type="text" name="name" id="name" required  lay-verify="required" placeholder="禁止：赌博|澳门|威尼斯|博彩|赔率|百家乐|六合彩" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">微信群主号</label>
+                    <div class="layui-input-inline">
+                      <input type="text" name="qz_number" id="qz_number" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">微信群简介</label>
+                    <div class="layui-input-block">
+                      <textarea name="desc" id="desc" placeholder="" required  lay-verify="required" class="layui-textarea"></textarea>
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">微信群二维码</label>
+                    <div class="layui-input-block">
+                          <div class="layui-upload">
+                              <button type="button" class="layui-btn" id="code-btn">上传图片</button>
+                              <input type="hidden" id="code" lay-verify="code"/>
+                              <div class="layui-upload-list">
+                                <img class="layui-upload-img" id="demo1" style="width: 92px;height: 92px;margin: 0 10px 10px 0;">
+                                <p id="codeText"></p>
+                              </div>
+                            </div> 
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">群主二维码</label>
+                    <div class="layui-input-block">
+                          <div class="layui-upload">
+                              <button type="button" class="layui-btn" id="qz_code-btn">上传图片</button>
+                              <input type="hidden" id="qz_code" lay-verify="qz_code"/>
+                              <div class="layui-upload-list">
+                                <img class="layui-upload-img" id="qz_code_look" style="width: 92px;height: 92px;margin: 0 10px 10px 0;">
+                                <p id="qzCodeText"></p>
+                              </div>
+                            </div> 
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">联系人</label>
+                    <div class="layui-input-inline">
+                      <input type="text" name="realname" id="realname" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">联系人手机</label>
+                    <div class="layui-input-inline">
+                      <input type="text" name="mobile" id="mobile" lay-verify="mobile" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">联系人QQ</label>
+                    <div class="layui-input-inline">
+                      <input type="text" name="qq" id="qq" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <div class="layui-input-block">
+                      <button class="layui-btn" lay-submit lay-filter="formDemo">提交</button>
+                      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                  </div>
+                </form>
+        	</div>
+		</div>
+	</div>
+</div>
+<script>
+$(function(){
+	layui.use('upload', function(){
+	  var upload = layui.upload;
+
+		//普通图片上传
+	  var uploadInst = upload.render({
+	    elem: '#code-btn'
+	    ,url: '<?=$this->url->get('upload/img', ['type'=>'code'])?>',
+	    before: function(obj){
+	      //预读本地文件示例，不支持ie8
+	      obj.preview(function(index, file, result){
+	        $('#demo1').attr('src', result); //图片链接（base64）
+	      });
+	    },
+	    size:2048,
+	    done: function(res){
+	      //如果上传失败
+	      if(res.code != 0){
+	        return layer.msg('上传失败');
+	      }
+	      //上传成功
+	      $('#codeText').html('<span style="color: green;">上传成功</span>');
+	      $('#code').val(res.data);
+	    }
+	    ,error: function(){
+	      //演示失败状态，并实现重传
+	      var demoText = $('#codeText');
+	      demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+	      demoText.find('#codeText .demo-reload').on('click', function(){
+	        uploadInst.upload();
+	      });
+	    }
+	  });
+
+	  var uploadQzCode = upload.render({
+		    elem: '#qz_code-btn'
+		    ,url: '<?=$this->url->get('upload/img', ['type'=>'code'])?>',
+		    before: function(obj){
+		      //预读本地文件示例，不支持ie8
+		      obj.preview(function(index, file, result){
+		        $('#qz_code_look').attr('src', result); //图片链接（base64）
+		      });
+		    },
+		    size:2048,
+		    done: function(res){
+		      //如果上传失败
+		      if(res.code != 0){
+		        return layer.msg('上传失败');
+		      }
+		      //上传成功
+		      $('#qzCodeText').html('<span style="color: green;">上传成功</span>');
+		      $('#qz_code').val(res.data);
+		    }
+		    ,error: function(){
+		      //演示失败状态，并实现重传
+		      var demoText = $('#qzCodeText');
+		      demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+		      demoText.find('#qzCodeText .demo-reload').on('click', function(){
+		        uploadInst.upload();
+		      });
+		    }
+		  });
+	});
+
+	layui.use('form', function(){
+		  var form = layui.form;
+		  
+		  //监听提交
+		  form.on('submit(formDemo)', function(data){
+			var obj = $(this);
+			obj.attr('disabled', true);
+			obj.text('请求中...');
+			
+			var name = data.field.name;
+			var qz_number = data.field.qz_number;
+			var desc = data.field.desc;
+			var code = data.field.code;
+			var qz_code = data.field.qz_code;
+			var realname = data.field.realname;
+			var mobile = data.field.mobile;
+			var qq = data.field.qq;
+			
+			$.ajax({
+				url:"<?=$this->url->get('member/doAddWxGroup');?>",
+				data:{'name':name, 'qz_number':qz_number, 'desc':desc, 'code':code, 'qz_code':qz_code, 'realname':realname, 'mobile':mobile, 'qq':qq},
+				dataType:'json',
+				type:'POST',
+				error:function(){
+					layer.msg('请求失败');
+					return false;
+				},
+				success:function(result){
+					if(result.code == 0){
+						layer.msg(result.msg);
+						window.location.href = "<?=$this->url->get('login/email');?>";
+					}if(result.code == 201){
+						layer.msg(result.msg, function(){
+							window.location.href = "<?=$this->url->get('login/index');?>";
+						});
+					}else{
+						layer.msg(result.msg);
+						return false;
+					}
+				},
+				complete:function(){
+					obj.attr('disabled', false);
+					obj.text('提交');
+				}
+			});
+		    return false;
+		  });
+		  form.verify({
+			code:function(v,i){
+				if(v == ''){
+					return '请上传微信群二维码';
+				}
+			},
+			qz_code:function(v,i){
+				if(v == ''){
+					return '请上传群主二维码';
+				}
+			},
+		 });
+
+		});
+});
+</script>

@@ -29,6 +29,8 @@ class Config extends BasicModel
             'config_type' => '类型',
             'config_key' => 'key',
             'config_value' => 'value',
+            'create_time' => '创建时间',
+            'update_time' => '更新时间',
         ];
     }
 }

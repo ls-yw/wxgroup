@@ -9,7 +9,7 @@ $moduleNamespaces = [
         'Basic'                      => APP_PATH.'/basic',
         'Library'                    => APP_PATH.'/library',
         'Logics'                     => APP_PATH.'/logics',
-//         'Models'                     => $config->application->modelsDir,
+        'Models'                     => APP_PATH.'/models'
     ];
 
 $loader->registerNamespaces($moduleNamespaces);

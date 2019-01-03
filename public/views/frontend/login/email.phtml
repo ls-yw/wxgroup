@@ -1,0 +1,66 @@
+<div class="layui-col-md12" style="height:40px;line-height:40px;">
+    <span class="layui-breadcrumb" style="visibility: visible;">
+      <a>位置：</a>
+      <a href="/">首页</a>
+      <span lay-separator="">/</span>
+      <a>注册</a>
+      <span lay-separator="">/</span>
+      <a><cite>激活</cite></a>
+    </span>
+</div>
+<div class="c-body layui-col-md12">
+	<div style="margin: 50px 10px;line-height:30px;">
+		<p>激活邮件已发送，请去邮箱点击激活，如未收到，请点击<a href="javascript:;" class="sendbtn green">重新发送</a></p>
+	</div>
+</div>
+<script>
+$(function(){
+	layui.use('layer', function(){
+		var layer = layui.layer;
+		$('.c-body').on('click', '.sendbtn',function(){
+			sendEmail($(this));
+		});
+	});   
+
+	function sendEmail(obj)
+	{
+		obj.text('发送中...');
+		$.ajax({
+			url:"<?=$this->url->get('login/sendEmail');?>",
+			dataType:'json',
+			type:'GET',
+			error:function(){
+				alert('请求失败');
+				return false;
+			},
+			success:function(result){
+				if(result.code == 0){
+					layer.msg(result.msg);
+					obj.text('已成功发送');
+					obj.removeClass('sendbtn');
+				}else if(result.code == 201){
+					layer.msg(result.msg, function(){
+						window.location.href='<?=$this->url->get('login/index');?>';
+					});
+					return false;
+				}else if(result.code == 202){
+					layer.msg(result.msg,function(){
+						window.location.href='<?=$this->url->get('member/index');?>';
+					});
+					return false;
+				}else{
+					layer.msg(result.msg);
+					obj.text('重新发送');
+					return false;
+				}
+			},
+			error:function(){
+				layer.msg('发送失败，请联系管理员');
+				obj.text('重新发送');
+			},
+			complete:function(){
+			}
+		});
+	}
+});
+</script>

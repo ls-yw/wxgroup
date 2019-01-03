@@ -32,9 +32,12 @@ class Member extends BasicModel
             'password' => '密码',
             'uniqid'=> '唯一码',
             'email_status' => '邮箱状态 0 未验证 1已验证',
+            'email_time' => '邮箱验证时间',
+            'role' => '角色',
             'last_time' => '最后登录时间',
             'last_ip' => '最后登录IP',
-            'status' => '状态',
+            'count' => '登录次数',
+            'deleted' => '状态',
             'create_time' => '创建时间',
             'update_time' => '更新时间',
         ];

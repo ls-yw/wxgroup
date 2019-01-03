@@ -2,9 +2,25 @@
 namespace Basic;
 
 use Phalcon\Mvc\Controller;
+use Logics\ConfigLogic;
 
 class BasicController extends Controller 
 {
+    protected $user = false;
+    protected $systemConfig = null;
+    
+    public function initialize()
+    {
+        $user= $this->session->get('user');
+        if(!empty($user)){
+            $this->user = $user;
+            $this->view->userName = $user['user_name'];
+            $this->view->userId = $user['id'];
+        }
+        
+        $this->getSystemConfig();
+    }
+    
     /**
      * Ajax方式返回数据到客户端
      * @access protected
@@ -25,5 +41,11 @@ class BasicController extends Controller
                 header('Content-Type:application/json; charset=utf-8');
                 exit(json_encode($data,JSON_UNESCAPED_UNICODE) ); // php 5.11
         }
+    }
+    
+    private function getSystemConfig()
+    {
+        $config = (new ConfigLogic())->getConfigs('system');
+        if($config)$this->systemConfig = $config;
     }
 }

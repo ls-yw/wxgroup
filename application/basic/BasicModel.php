@@ -25,6 +25,26 @@ class BasicModel extends Model
     }
     
     /**
+     * SQL重置前缀
+     * @param $string
+     * @return string
+     */
+    public function loadPrefix($string=null){
+        static $db_prefix=null;
+        if(!$db_prefix){
+            $dbConfig=$this->getReadConnection()->getDescriptor();
+            $db_prefix=isset($dbConfig['prefix'])?$dbConfig['prefix']:null;
+        }
+        if(!$string || !is_string($string)){
+            $preg_name=str_replace('\\', '_',get_class($this));
+            $string=preg_replace('/^(([^_]_?)*Models_?)/i', '',$preg_name );
+            $string='{{'.strtolower($string).'}}';
+        }
+    
+        return preg_replace('/\{\{(.+?)\}\}/',$db_prefix.'\\1',$string);
+    }
+    
+    /**
      * 处理where条件，转化为sql
      * array(
      *     'id' => [1,2,3]               //id in (1,2,3)
