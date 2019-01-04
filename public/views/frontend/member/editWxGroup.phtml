@@ -5,7 +5,7 @@
       <span lay-separator="">/</span>
       <a>会员中心</a>
       <span lay-separator="">/</span>
-      <a><cite>发布微信群</cite></a>
+      <a><cite>编辑微信群</cite></a>
     </span>
 </div>
 <div class="c-body layui-col-md12">
@@ -22,10 +22,10 @@
               <span class="layui-nav-bar" style="top: 322.5px; height: 0px; opacity: 0;"></span></ul>
 		</div>
 		<div class="layui-col-md9">
-    		<div class="layui-card-header" style="padding: 0;margin:0 15px;">发布微信群</div>
+    		<div class="layui-card-header" style="padding: 0;margin:0 15px;">编辑微信群</div>
         	<div class="layui-card-body layui-row layui-col-space10">
         		<form class="layui-form" action="">
-        		  <div class="layui-form-item">
+        		 <div class="layui-form-item">
                     <label class="layui-form-label">分类</label>
                     <div class="layui-input-block">
                       <select name="category_id" lay-verify="required">
@@ -34,11 +34,11 @@
                         <?php if(isset($val['children']) && count($val['children']) > 0):?>
                         <optgroup label="<?=$val['name']?>">
                         	<?php foreach ($val['children'] as $v):?>
-                        	<option value="<?=$v['id']?>"><?=$v['name']?></option>
+                        	<option value="<?=$v['id']?>" <?php if($info['category_id'] == $v['id'])echo 'selected="selected"'?>><?=$v['name']?></option>
                         	<?php endforeach;?>
                         </optgroup>
                         <?php else :?>
-                        <option value="<?=$val['id']?>"><?=$val['name']?></option>
+                        <option value="<?=$val['id']?>" <?php if($info['category_id'] == $val['id'])echo 'selected="selected"'?>><?=$val['name']?></option>
                         <?php endif;?>
                         <?php endforeach;?>
                       </select>
@@ -47,19 +47,19 @@
                   <div class="layui-form-item">
                     <label class="layui-form-label">微信群名称</label>
                     <div class="layui-input-block">
-                      <input type="text" name="name" id="name" required  lay-verify="required" placeholder="禁止：赌博|澳门|威尼斯|博彩|赔率|百家乐|六合彩" autocomplete="off" class="layui-input">
+                      <input type="text" name="name" id="name" required  lay-verify="required" placeholder="禁止：赌博|澳门|威尼斯|博彩|赔率|百家乐|六合彩" autocomplete="off" class="layui-input" value="<?=$info['name']?>">
                     </div>
                   </div>
                   <div class="layui-form-item">
                     <label class="layui-form-label">微信群主号</label>
                     <div class="layui-input-inline">
-                      <input type="text" name="qz_number" id="qz_number" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                      <input type="text" name="qz_number" id="qz_number" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="<?=$info['qz_number']?>">
                     </div>
                   </div>
                   <div class="layui-form-item">
                     <label class="layui-form-label">微信群简介</label>
                     <div class="layui-input-block">
-                      <textarea name="desc" id="desc" placeholder="" required  lay-verify="required" class="layui-textarea"></textarea>
+                      <textarea name="desc" id="desc" placeholder="" required  lay-verify="required" class="layui-textarea"><?=$info['desc']?></textarea>
                     </div>
                   </div>
                   <div class="layui-form-item">
@@ -67,9 +67,9 @@
                     <div class="layui-input-block">
                           <div class="layui-upload">
                               <button type="button" class="layui-btn" id="code-btn">上传图片</button>
-                              <input type="hidden" id="code" name="code" lay-verify="code"/>
+                              <input type="hidden" id="code" name="code" lay-verify="code" value="<?=$info['code']?>"/>
                               <div class="layui-upload-list">
-                                <img class="layui-upload-img" id="demo1" style="width: 92px;height: 92px;margin: 0 10px 10px 0;">
+                                <img class="layui-upload-img" id="demo1" style="width: 92px;height: 92px;margin: 0 10px 10px 0;" src="<?=$info['code']?>">
                                 <p id="codeText"></p>
                               </div>
                             </div> 
@@ -80,9 +80,9 @@
                     <div class="layui-input-block">
                           <div class="layui-upload">
                               <button type="button" class="layui-btn" id="qz_code-btn">上传图片</button>
-                              <input type="hidden" id="qz_code" name="qz_code" lay-verify="qz_code"/>
+                              <input type="hidden" id="qz_code" name="qz_code" lay-verify="qz_code" value="<?=$info['qz_code']?>"/>
                               <div class="layui-upload-list">
-                                <img class="layui-upload-img" id="qz_code_look" style="width: 92px;height: 92px;margin: 0 10px 10px 0;">
+                                <img class="layui-upload-img" id="qz_code_look" style="width: 92px;height: 92px;margin: 0 10px 10px 0;" src="<?=$info['qz_code']?>">
                                 <p id="qzCodeText"></p>
                               </div>
                             </div> 
@@ -91,19 +91,19 @@
                   <div class="layui-form-item">
                     <label class="layui-form-label">联系人</label>
                     <div class="layui-input-inline">
-                      <input type="text" name="realname" id="realname" placeholder="" autocomplete="off" class="layui-input">
+                      <input type="text" name="realname" id="realname" placeholder="" autocomplete="off" class="layui-input" value="<?=$info['realname']?>">
                     </div>
                   </div>
                   <div class="layui-form-item">
                     <label class="layui-form-label">联系人手机</label>
                     <div class="layui-input-inline">
-                      <input type="text" name="mobile" id="mobile" lay-verify="mobile" placeholder="" autocomplete="off" class="layui-input">
+                      <input type="text" name="mobile" id="mobile" lay-verify="mobile" placeholder="" autocomplete="off" class="layui-input" value="<?=$info['mobile']?>">
                     </div>
                   </div>
                   <div class="layui-form-item">
                     <label class="layui-form-label">联系人QQ</label>
                     <div class="layui-input-inline">
-                      <input type="text" name="qq" id="qq" placeholder="" autocomplete="off" class="layui-input">
+                      <input type="text" name="qq" id="qq" placeholder="" autocomplete="off" class="layui-input" value="<?=$info['qq']?>">
                     </div>
                   </div>
                   <div class="layui-form-item">
@@ -202,7 +202,7 @@ $(function(){
 			var qq = data.field.qq;
 			
 			$.ajax({
-				url:"<?=$this->url->get('member/doAddWxGroup');?>",
+				url:"<?=$this->url->get('member/doEditWxGroup', ['id'=>$info['id']]);?>",
 				data:{'name':name, 'qz_number':qz_number, 'category_id':category_id, 'desc':desc, 'code':code, 'qz_code':qz_code, 'realname':realname, 'mobile':mobile, 'qq':qq},
 				dataType:'json',
 				type:'POST',

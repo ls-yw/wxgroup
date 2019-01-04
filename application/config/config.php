@@ -5,6 +5,7 @@
  */
 
 return new \Phalcon\Config([
+    'redis' => require_once APP_PATH.'/config/redis.php',
     'application' => [
         'database'  => require_once APP_PATH.'/config/database.php',
         'modules'   => require_once APP_PATH.'/config/modules.php',

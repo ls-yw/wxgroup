@@ -1,58 +1,67 @@
-<div class="site-wxlist">
-	<div class="row screen">
-		<div class="col-lg-12">
-			<div class="row">
-				<div class="col-lg-1 title">类型：</div>
-				<div class="col-lg-11 tag"><a>123</a><a>阿斯顿发顺丰</a><a>asdfsd</a><a>阿撒旦法的萨芬</a><a>斯蒂芬斯蒂芬但是</a><a>斯蒂芬的是</a><a>双方的但是</a><a>123</a><a>撒旦发射点</a><a>阿斯蒂芬岁的</a><a>斯蒂芬的是</a><a>123</a><a>日突然</a><a>栅格化柔荑花</a><a>是发放</a><a>123</a><a>123</a><a>123</a></div>
+<div class="layui-col-md12" style="height:40px;line-height:40px;">
+    <span class="layui-breadcrumb" style="visibility: visible;">
+      <a>位置：</a>
+      <a href="/">首页</a>
+      <span lay-separator="">/</span>
+      <a>微信群</a>
+      <span lay-separator="">/</span>
+      <a><cite>列表</cite></a>
+    </span>
+</div>
+<div class="c-body layui-col-md12">
+	<div class="layui-row screen sx">
+		<div class="layui-col-lg12">
+			<div class="layui-row">
+				<div class="layui-col-md1 title">类型：</div>
+				<div class="layui-col-md11 tag">
+					<a href="<?php if(empty($categoryId)):echo 'javascript:;';else :$this->url->get('wx/list');endif;?>" class="<?php if(empty($categoryId))echo 'active';?>">全部</a>
+					<?php foreach ($category as $val) :?>
+						<a href="<?php if($val['id'] != $categoryId):echo $this->url->get('wx/list', ['categoryId'=>$val['id']]);else :echo 'javascript:;';endif;?>" class="<?php if($val['id'] == $categoryId)echo 'active';?>"><?=$val['name']?></a>
+					<?php endforeach;?>
+				</div>
 			</div>
 		</div>
 	</div>
 	
 	<div class="row">
 		<div class="col-lg-12 list">
-			<div class="group">
-				<div class="lead-img"><img alt="context" src="/statics/img/1.jpg" width="170" height="170"></div>
-				<div class="group-title"><a href="<?=$this->url->get('wx/detail');?>">adminadmin</a></div>
-				<div class="group-desc">jianjiejanjiejianjiejanjiejianjiejanjiejianjiejanjiejianjiejanjiejianjiejanjiejianjiejanjie</div>
-				<div class="group-time"><span class="pull-left">1天前</span><span class="pull-right">3221</span></div>
-			</div>
-			<div class="group">
-				<div class="lead-img"><img alt="context" src="/statics/img/1.jpg" width="170" height="170"></div>
-				<div class="group-title">adminadmin</div>
-				<div class="group-desc">jianjiejanjie</div>
-				<div class="group-time"><span class="pull-left">1天前</span><span class="pull-right">3221</span></div>
-			</div>
-			<div class="group">
-				<div class="lead-img"><img alt="context" src="/statics/img/1.jpg" width="170" height="170"></div>
-				<div class="group-title">adminadmin</div>
-				<div class="group-desc">jianjiejanjie</div>
-				<div class="group-time"><span class="pull-left">1天前</span><span class="pull-right">3221</span></div>
-			</div>
-			<div class="group">
-				<div class="lead-img"><img alt="context" src="/statics/img/1.jpg" width="170" height="170"></div>
-				<div class="group-title">adminadmin</div>
-				<div class="group-desc">jianjiejanjie</div>
-				<div class="group-time"><span class="pull-left">1天前</span><span class="pull-right">3221</span></div>
-			</div>
-			<div class="group">
-				<div class="lead-img"><img alt="context" src="/statics/img/1.jpg" width="170" height="170"></div>
-				<div class="group-title">adminadmin</div>
-				<div class="group-desc">jianjiejanjie</div>
-				<div class="group-time"><span class="pull-left">1天前</span><span class="pull-right">3221</span></div>
-			</div>
-			<div class="group">
-				<div class="lead-img"><img alt="context" src="/statics/img/1.jpg" width="170" height="170"></div>
-				<div class="group-title">adminadmin</div>
-				<div class="group-desc">jianjiejanjie</div>
-				<div class="group-time"><span class="pull-left">1天前</span><span class="pull-right">3221</span></div>
-			</div>
-			<div class="group">
-				<div class="lead-img"><img alt="context" src="/statics/img/1.jpg" width="170" height="170"></div>
-				<div class="group-title">adminadmin</div>
-				<div class="group-desc">jianjiejanjie</div>
-				<div class="group-time"><span class="pull-left">1天前</span><span class="pull-right">3221</span></div>
-			</div>
+			<div class="layui-fluid layadmin-cmdlist-fluid">
+  <div class="layui-row layui-col-space30">
+    <?php if(!empty($wxGroup['list'])):foreach ($wxGroup['list'] as $val):?>
+    <div class="layui-col-md2 layui-col-sm4">
+        <div class="cmdlist-container" style="text-align:center">
+            <a href="<?=$this->url->get('wx/detail', ['id'=>$val['id']])?>" target="_blank"><img src="<?=$val['code']?>" with="110" height="110"></a>
+            <a href="<?=$this->url->get('wx/detail', ['id'=>$val['id']])?>" target="_blank">
+              <div class="cmdlist-text">
+                <p class="info" style="height: 30px;line-height:30px;text-align:center;"><?=$val['name']?></p>
+                <div class="price">
+                    <p><?=date('H:i', strtotime($val['update_time']))?></p>
+                    <span class="flow"> 查看：433</span>
+                </div>
+              </div>
+            </a>
+        </div>
+    </div>
+    <?php endforeach;endif;?>
+    <div class="layui-col-md12 layui-col-sm12">
+        <div id="page"></div>
+    </div>
+  </div>
+</div>
 		</div>
-		<div class="col-lg-12 page"><a>首页</a><a>上下一页</a><span>1/2</span><a>下一页</a><a>尾页</a></div>
 	</div>
 </div>
+<script>
+$(function(){
+	layui.use('laypage', function(){
+		  var laypage = layui.laypage;
+		  
+		  //执行一个laypage实例
+		  laypage.render({
+		    elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+		    ,count: <?=$wxGroup['pageinfo']['total']?>, //数据总数，从服务端得到
+		  limit:24,
+		  });
+		});
+});
+</script>

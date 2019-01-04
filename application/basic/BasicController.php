@@ -8,6 +8,8 @@ class BasicController extends Controller
 {
     protected $user = false;
     protected $systemConfig = null;
+    protected $_errorMsg = false;
+    protected $_successMsg = false;
     
     public function initialize()
     {

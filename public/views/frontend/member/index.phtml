@@ -23,7 +23,7 @@
 		</div>
 		<div class="layui-col-md9">
     		<div class="layui-row">
-          <div class="layui-card-header" style="padding: 0;margin:0 15px;">简单用法</div>
+          <div class="layui-card-header" style="padding: 0;margin:0 15px;">微信群列表</div>
           <div class="layui-card-body">
             <table class="layui-table">
               <colgroup>
@@ -33,25 +33,34 @@
               </colgroup>
               <thead>
                 <tr>
-                  <th>昵称</th>
-                  <th>加入时间</th>
-                  <th>签名</th>
+                  <th>微信群名称</th>
+                  <th>群主微信号</th>
+                  <th>简介</th>
+                  <th>状态</th>
+                  <th>操作</th>
                 </tr> 
               </thead>
               <tbody>
+              <?php if(!empty($data['list'])):
+                        foreach ($data['list'] as $val):
+              ?>
                 <tr>
-                  <td>贤心</td>
-                  <td>2016-11-29</td>
-                  <td>人生就像是一场修行</td>
+                  <td><?=$val['name']?></td>
+                  <td><?=$val['qz_number']?></td>
+                  <td><?=$val['desc']?></td>
+                  <td><?php switch ($val['deleted']):case 0:echo '审核成功';break;case 1:echo '审核中';break;case 2:echo '删除';break;case 3:echo '审核失败';break;endswitch;?></td>
+                  <td><a href="<?=$this->url->get('member/editWxGroup', ['id'=>$val['id']])?>">编辑</a> | <a href="<?=$this->url->get('member/delWxGroup', ['id'=>$val['id']])?>">删除</a></td>
                 </tr>
+               <?php endforeach;else :?>
                 <tr>
-                  <td>许闲心</td>
-                  <td>2016-11-28</td>
-                  <td>于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
+                  <td colspan="5">暂无数据。。。</td>
                 </tr>
+              <?php endif;?>
               </tbody>
             </table>
-            </div></div>
+            <div id="page"></div>
+            </div>
+            </div>
             </div>
           </div>
         </div>
@@ -65,6 +74,25 @@ $(function(){
 	  var element = layui.element;
 	  
 	  //…
+	});
+	layui.use('laypage', function(){
+		  var laypage = layui.laypage;
+		  
+		  //执行一个laypage实例
+		  laypage.render({
+		    elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+		    ,count: <?=$data['pageinfo']['total']?>, //数据总数，从服务端得到
+		  limit:20,
+		  });
+		});
+	layui.use('layer', function(){
+		var layer = layui.layer;
+		<?php if($errorMsg):?>
+		layer.msg('<?=$errorMsg?>', {icon:5});
+		<?php endif;?>
+		<?php if($successMsg):?>
+		layer.msg('<?=$successMsg?>', {icon:6});
+		<?php endif;?>
 	});
 });
 </script>

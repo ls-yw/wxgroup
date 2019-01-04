@@ -441,6 +441,50 @@ a.desc:after {
 .wrap .layui-container .c-body{background:#fff;padding:10px;}
 .layui-header .logo{color:#fff;font-size:18px;}
 
+.sx .tag a{
+	padding:5px 10px;
+}
+.sx .title{font-weight:bold;}
+.sx .tag a:hover,.sx .tag a.active{
+	background:#393D49;
+	color:#fff;
+	border-radius:5px;
+}
+.sx{line-height:24px !important;margin:10px 10px 20px 10px;}
+.cmdlist-text .info {
+    height: 40px;
+    font-size: 14px;
+    line-height: 20px;
+    width: 100%;
+    overflow: hidden;
+    color: #666;
+    margin-bottom: 10px;
+}
+.cmdlist-text .price {
+    font-size: 14px;
+}
+.cmdlist-text .price b {
+    margin-right: 20px;
+}
+.cmdlist-text .price p {
+    display: inline-block;
+	text-align: left;
+	float: left;
+}
+.cmdlist-text .flow {
+    text-align: right;
+    float: right;
+}
+.wxq-detail .wxq-code{
+	border:1px solid #8a90a5;
+	padding:10px;
+	text-align:center;
+}
+.wxq-detail .wxq-code .layui-tab ul{border:none;}
+.wxq-detail .wxq-code .layui-tab ul li{border:1px solid #999;border-radius:0 10px 10px 0;}
+.wxq-detail .wxq-code .layui-tab ul li:first-child{border-radius:10px 0 0 10px;}
+.wxq-detail .wxq-code .layui-tab ul li.layui-this:after{border:none;width:0px;height:0px;}
+.wxq-detail .wxq-code .layui-tab ul li.layui-this{background:#393D49;color:#fff}
 
 /* 适配多设备 */
 @media screen and (max-width: 750px) {

@@ -3,9 +3,9 @@ namespace Models;
 
 use Basic\BasicModel;
 
-class Group extends BasicModel 
+class GroupCategory extends BasicModel 
 {
-    protected $_targetTable = "wx_group";
+    protected $_targetTable = "wx_group_category";
     
     /**
      * 初始化
@@ -26,18 +26,9 @@ class Group extends BasicModel
     {
         return [
             'id'   => 'ID',
-            'uid' => 'uid',
             'name' => '微信群名称',
-            'qz_number' => '群主微信号',
-            'desc' => 'desc',
-            'code' => 'code',
-            'qz_code' => 'qz_code',
-            'realname' => 'realname',
-            'mobile' => 'mobile',
-            'category_id'=>'category_id',
-            'qq' => 'qq',
+            'pid' => 'pid',
             'deleted' => 'deleted',
-            'examine_time'=>'examine_time',
             'create_time' => '创建时间',
             'update_time' => '更新时间',
         ];

@@ -1,15 +1,33 @@
-<div class="site-wxdetail">
-	<div class="row">
-		<div class="col-lg-9">
-    		<div class="row">
-        		<div class="col-md-6">
-        			<p>
-        				<span>群二维码</span>
-        				<span>群主微信</span>
-        			</p>
-        			<div class="p1"><p><img src="http://www.jinnianduoda.com/d/file/2018-12-31/c5c63acfe597d221b470c81208457756.jpeg" width="200"></p><p class="t_txt">微信扫一扫，添加关注</p></div>
+<div class="layui-col-md12" style="height:40px;line-height:40px;">
+    <span class="layui-breadcrumb" style="visibility: visible;">
+      <a>位置：</a>
+      <a href="/">首页</a>
+      <span lay-separator="">/</span>
+      <a>微信群</a>
+      <span lay-separator="">/</span>
+      <a><cite>详情</cite></a>
+    </span>
+</div>
+<div class="c-body layui-col-md12 wxq-detail">
+	<div class="layui-row">
+		<div class="layui-col-lg12">
+    		<div class="layui-row">
+        		<div class="layui-col-md4">
+        			<div class="wxq-code">
+            			<div class="layui-tab">
+                          <ul class="layui-tab-title">
+                            <li class="layui-this">群二维码</li>
+                            <li>群主微信</li>
+                          </ul>
+                          <div class="layui-tab-content">
+                          	<div class="layui-tab-item layui-show"><img src="<?=$info['code']?>" width="200"></div>
+                          	<div class="layui-tab-item"><img src="<?=$info['qz_code']?>" width="200"></div>
+                          </div>
+                        </div>
+            			<div class="p1"><p class="t_txt">微信扫一扫，添加关注</p></div>
+        			</div>
         		</div>
-        		<div class="col-md-6">
+        		<div class="layui-col-md8">
         			<div class="title">微信红包群</div>
         			<div class="desc">想要快速出单加我，人脉都是对你产品感兴趣的精准客户，不是软件加粉，人工筛选导入，都是根据亲做的产品筛选对你产品感兴趣和有意向购买的精准客户，保证没有微商，只有对你产品感兴趣的客源才能让你出单多多</div>
         			<div class="other-info">
@@ -23,31 +41,14 @@
         		</div>
         	</div>
 		</div>
-		<div class="col-lg-3">
-			<div class="info_fr ml20">
-                <ul>
-                    
-                    <li class="ellips weixinqunICON">
-                        <a href="/article?id=869580">
-                            因喉咙发炎无法唱下去，华仔忍痛取消演唱会！
-                        </a>
-                    </li>
-                    
-                    <li class="ellips weixinqunICON">
-                        <a href="/article?id=869579">
-                            在每个人的生命历程中总会遇到很多人，人生的际遇并非寻常
-                        </a>
-                    </li>
-                    
-                    <li class="ellips weixinqunICON">
-                        <a href="/article?id=869578">
-                            不去提升自己，那么换来的可能是男人的背叛！
-                        </a>
-                    </li>
-                    
-                    
-                </ul>
-            </div>
-		</div>
 	</div>
 </div>
+<script>
+$(function(){
+	layui.use('element', function(){
+		  var element = layui.element;
+		  
+		  //…
+		});
+});
+</script>
