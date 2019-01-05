@@ -29,7 +29,7 @@ class MemberLogic extends BasicLogic
         $key = $user['uniqid'].time();
         DI::getDefault()->get('session')->set($key, $user);
         $subject = '激活你的微信群帐号';
-        $message = '您在微信群注册了帐号, 请在20分钟内点击下面地址进行激活:<br/><a href="'.$host.DI::getDefault()->get('url')->get('login/activate', ['token'=>$key]).'" style="font-weight:36px;">点我激活</a>';
+        $message = '您在微信群注册了帐号, 请在20分钟内点击下面地址进行激活:<br/><a href="http://'.$host.DI::getDefault()->get('url')->get('login/activate', ['token'=>$key]).'" style="font-weight:36px;">点我激活</a>';
         Log::write('email', $user['email']."\n".$subject."\n".$message);
         return (new Mail())->sendEmail($user['email'], $subject, $message);
     }
