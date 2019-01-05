@@ -21,9 +21,9 @@ class BasicController extends Controller
         }
         
         $this->getSystemConfig();
-        $this->view->seoTitle = $this->systemConfig['seoTitle'];
-        $this->view->seoTitle = $this->systemConfig['seoKeywords'];
-        $this->view->seoTitle = $this->systemConfig['seoDesc'];
+        $this->view->seoTitle    = $this->systemConfig['seoTitle'];
+        $this->view->seoKeywords = $this->systemConfig['seoKeywords'];
+        $this->view->seoDesc     = $this->systemConfig['seoDesc'];
     }
     
     /**
