@@ -2,6 +2,7 @@
 use Phalcon\Mvc\Application;
 use Phalcon\Di\FactoryDefault;
 use Library\Log;
+use Phalcon\Logger;
 
 error_reporting(E_ALL);
 
@@ -43,5 +44,5 @@ try{
 
     $response->send();
 } catch (\Exception $e) {
-    echo $e->getMessage();
+    Log::write('system', $e->getMessage());
 }

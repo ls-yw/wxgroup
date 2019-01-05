@@ -15,6 +15,7 @@ class WxController extends BasicController
         $this->view->category   = (new WxgroupLogic())->getCategory();
         $this->view->categoryId = $categoryId;
         $this->view->wxGroup    = $list;
+        $this->view->topActive = 'm-list';
     }
     
     public function detailAction()
