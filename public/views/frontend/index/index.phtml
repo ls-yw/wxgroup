@@ -29,7 +29,7 @@
                 	<h4 class="title">分类</h4>
                 	<div class="content tag-cloud">
                 		<?php foreach ($category as $val):?>
-                		<a href="<?=$this->url->get('wx/list', ['category'=>$val['id']])?>"><?=$val['name']?></a>
+                		<a href="<?=$this->url->get('wx/list', ['categoryId'=>$val['id']])?>"><?=$val['name']?></a>
                 		<?php endforeach;?>
                 	</div>
                 </div>
@@ -37,15 +37,3 @@
         </div>
     </div>
 </div>
-<script>
-$(function(){
-	$('#myTabs a').click(function (e) {
-	  e.preventDefault()
-	  $(this).tab('show')
-	})
-	$('#myTabs a[href="#profile"]').tab('show') // Select tab by name
-	$('#myTabs a:first').tab('show') // Select first tab
-	$('#myTabs a:last').tab('show') // Select last tab
-	$('#myTabs li:eq(2) a').tab('show') // Select third tab (0-indexed)
-});
-</script>

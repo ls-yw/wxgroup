@@ -4,6 +4,7 @@ namespace Logics;
 use Basic\BasicLogic;
 use Models\Group;
 use Models\GroupCategory;
+use Library\Redis;
 
 class WxgroupLogic extends BasicLogic
 {
@@ -75,9 +76,31 @@ class WxgroupLogic extends BasicLogic
         return $arr;
     }
     
+    public function getCategoryPairs()
+    {
+        $list = (new GroupCategory())->getList(['deleted'=>0], 'pid asc,id asc');
+        $arr = [];
+        if(!empty($list)){
+            foreach ($list as $val) {
+                $arr[$val['id']] = $val['name'];
+            }
+        }
+        return $arr;
+    }
+    
     public function getTops($num)
     {
         $rows = (new Group())->getList(['deleted'=>0], 'examine_time desc', 0, $num);
         return $rows;
+    }
+    
+    public function addPV($ip, $type, $id)
+    {
+        $key = md5($ip.$type.$id);
+        $v = Redis::getInstance()->get($key);
+        if(!$v){
+            (new Group())->updateData(['pv'=>'pv + 1'], ['id'=>$id], 0);
+            Redis::getInstance()->setex($key, 60, true);
+        }
     }
 }

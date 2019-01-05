@@ -4,8 +4,8 @@ body {
 }
 
 .wrap {
-    min-height: 100%;
-    height: auto;
+    /*min-height: 100%;
+    height: auto;*/
     margin: 0 auto -60px;
     padding: 0 0 60px;
 }
@@ -16,11 +16,12 @@ body {
 
 .footer {
     height: 60px;
-    background-color: #222;
+    background-color: #393D49;
     border-top: 1px solid #080808;
     padding-top: 20px;
+	margin-top:30px;
 }
-.footer{
+.footer,.footer a{
 	color:#fff;
 }
 .jumbotron {
@@ -39,7 +40,7 @@ body {
 }
 /* 头部 */
 .header{height: 59px; border-bottom: 1px solid #404553;  background-color: #393D49;}
-.logo{position: absolute; left: 0; top: 16px;}
+.logo{position: absolute; left: 0; top: 16px;font-family:cursive;}
 .logo img{width: 82px; height: 31px;}
 
 .header .layui-nav{position: absolute; right: 0; top: 0; padding: 0; background: none;}
@@ -439,7 +440,7 @@ a.desc:after {
 .navbar-collapse .navbar-right li a:hover{background-color:#35b558}
 .navbar-collapse .navbar-right li p {padding:15px;margin:0;}
 .wrap .layui-container .c-body{background:#fff;padding:10px;}
-.layui-header .logo{color:#fff;font-size:18px;}
+.layui-header .logo{color:#fff;font-size:30px;}
 
 .sx .tag a{
 	padding:5px 10px;
@@ -476,10 +477,27 @@ a.desc:after {
     float: right;
 }
 .wxq-detail .wxq-code{
-	border:1px solid #8a90a5;
 	padding:10px;
 	text-align:center;
+	display:inline-block;
 }
+.wxq-detail .wxq-code .layui-tab-content{
+	border:1px solid #bfbebe;
+	padding:10px;
+	text-align:center;
+	display:inline-block;
+	margin:20px 0 0 0;
+}
+.wxq-detail .wxq-code .layui-tab-content .p1{line-height:36px;}
+.wxq-detail .content .title{
+	font-weight:bold;
+	line-height:30px;
+	font-size:30px;
+	padding:10px 0;
+}
+.wxq-detail .content .desc{line-height:24px;color:#999}
+.wxq-detail .content .other-info{margin:20px 0;}
+.wxq-detail .content .other-info li span{border:1px solid #c17c15;padding:5px;border-radius:5px;margin-right:10px;}
 .wxq-detail .wxq-code .layui-tab ul{border:none;}
 .wxq-detail .wxq-code .layui-tab ul li{border:1px solid #999;border-radius:0 10px 10px 0;}
 .wxq-detail .wxq-code .layui-tab ul li:first-child{border-radius:10px 0 0 10px;}

@@ -14,7 +14,7 @@
 			<div class="layui-row">
 				<div class="layui-col-md1 title">类型：</div>
 				<div class="layui-col-md11 tag">
-					<a href="<?php if(empty($categoryId)):echo 'javascript:;';else :$this->url->get('wx/list');endif;?>" class="<?php if(empty($categoryId))echo 'active';?>">全部</a>
+					<a href="<?php if(empty($categoryId)):echo 'javascript:;';else :echo $this->url->get('wx/list');endif;?>" class="<?php if(empty($categoryId))echo 'active';?>">全部</a>
 					<?php foreach ($category as $val) :?>
 						<a href="<?php if($val['id'] != $categoryId):echo $this->url->get('wx/list', ['categoryId'=>$val['id']]);else :echo 'javascript:;';endif;?>" class="<?php if($val['id'] == $categoryId)echo 'active';?>"><?=$val['name']?></a>
 					<?php endforeach;?>
@@ -36,13 +36,15 @@
                 <p class="info" style="height: 30px;line-height:30px;text-align:center;"><?=$val['name']?></p>
                 <div class="price">
                     <p><?=date('H:i', strtotime($val['update_time']))?></p>
-                    <span class="flow"> 查看：433</span>
+                    <span class="flow"> 查看：<?=$val['pv']?></span>
                 </div>
               </div>
             </a>
         </div>
     </div>
-    <?php endforeach;endif;?>
+    <?php endforeach;else :?>
+    <div class="layui-col-md12">暂时没有数据...</div>
+    <?php endif;?>
     <div class="layui-col-md12 layui-col-sm12">
         <div id="page"></div>
     </div>
@@ -58,8 +60,8 @@ $(function(){
 		  
 		  //执行一个laypage实例
 		  laypage.render({
-		    elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
-		    ,count: <?=$wxGroup['pageinfo']['total']?>, //数据总数，从服务端得到
+		    elem: 'page',
+		    count: <?=$wxGroup['pageinfo']['total']?>,
 		  limit:24,
 		  });
 		});

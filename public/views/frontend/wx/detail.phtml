@@ -12,7 +12,7 @@
 	<div class="layui-row">
 		<div class="layui-col-lg12">
     		<div class="layui-row">
-        		<div class="layui-col-md4">
+        		<div class="layui-col-md4" style="text-align:center;">
         			<div class="wxq-code">
             			<div class="layui-tab">
                           <ul class="layui-tab-title">
@@ -22,20 +22,20 @@
                           <div class="layui-tab-content">
                           	<div class="layui-tab-item layui-show"><img src="<?=$info['code']?>" width="200"></div>
                           	<div class="layui-tab-item"><img src="<?=$info['qz_code']?>" width="200"></div>
+                          	<div class="p1"><p class="t_txt">微信扫一扫，添加关注</p></div>
                           </div>
                         </div>
-            			<div class="p1"><p class="t_txt">微信扫一扫，添加关注</p></div>
         			</div>
         		</div>
-        		<div class="layui-col-md8">
-        			<div class="title">微信红包群</div>
-        			<div class="desc">想要快速出单加我，人脉都是对你产品感兴趣的精准客户，不是软件加粉，人工筛选导入，都是根据亲做的产品筛选对你产品感兴趣和有意向购买的精准客户，保证没有微商，只有对你产品感兴趣的客源才能让你出单多多</div>
+        		<div class="layui-col-md8 content">
+        			<div class="title"><?=$info['name']?></div>
+        			<div class="desc">简介：<?=$info['desc']?></div>
         			<div class="other-info">
                         <ul>
-                            <li style="width:40%"><span>行业：</span><a href="/list/201-0-0.html">微商</a></li>
-                            <li style="width:60%"><span>地区：</span><a href="/group/?city=394">北京市</a></li>
-                            <li style="width:100%"><span>时间：</span>2019-01-02 02:37:40</li>
-                            <li style="width:100%"><span>标签：</span>高价收微信</li>
+                            <li class="layui-col-xs4"><span>行业</span><a href="<?=$this->url->get('wx/list',['categoryId'=>$info['category_id']])?>"><?=$categoryPairs[$info['category_id']]?></a></li>
+                            <li class="layui-col-xs4"><span>查看</span><?=$info['pv']?> 次</li>
+                            <li class="layui-col-xs4"><span>时间</span><?=$info['create_time']?></li>
+                            <!-- <li style="width:100%"><span>标签：</span></li> -->
                         </ul>
                     </div>
         		</div>

@@ -95,7 +95,7 @@ class LoginController extends BasicController
         $data['id'] = $uid;
         $this->session->set('user', $data);
         
-        (new MemberLogic())->sendActivateEmail($data, $this->systemConfig['host']);
+        (new MemberLogic())->sendActivateEmail($data, 'http://'.$this->systemConfig['host']);
         
         return $this->ajaxReturn(0, '注册成功，请去激活邮箱');
     }

@@ -166,13 +166,17 @@ class BasicModel extends Model
     public function dealUpdateData(array $data)
     {
         $value = $fieldArr = [];
-        foreach ($data as $key => $val) {
-            $field[]            = '`'.$key.'`=?';
-            $value[]            = $val;
-        }
-         
-        $str = implode(',', $field);
-        return ['val'=>$str, 'params'=>$value];
+	    foreach ($data as $key => $val) {
+	        if(strpos($val, '+') || strpos($val, ' - ')){
+	            $fieldArr[]            = '`'.$key.'`='.$val;
+	        }else{
+	            $fieldArr[]            = '`'.$key.'`=?';
+	            $value[]            = $val;
+	        }
+	    }
+	    
+	    $str = implode(',', $fieldArr);
+	    return ['val'=>$str, 'params'=>$value];
     }
     
     /**

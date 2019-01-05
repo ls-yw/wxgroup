@@ -36,6 +36,7 @@ class Group extends BasicModel
             'mobile' => 'mobile',
             'category_id'=>'category_id',
             'qq' => 'qq',
+            'pv' => 'pv',
             'deleted' => 'deleted',
             'examine_time'=>'examine_time',
             'create_time' => '创建时间',

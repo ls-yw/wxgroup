@@ -21,6 +21,9 @@ class BasicController extends Controller
         }
         
         $this->getSystemConfig();
+        $this->view->seoTitle = $this->systemConfig['seoTitle'];
+        $this->view->seoTitle = $this->systemConfig['seoKeywords'];
+        $this->view->seoTitle = $this->systemConfig['seoDesc'];
     }
     
     /**
@@ -48,6 +51,9 @@ class BasicController extends Controller
     private function getSystemConfig()
     {
         $config = (new ConfigLogic())->getConfigs('system');
-        if($config)$this->systemConfig = $config;
+        if($config){
+            $this->systemConfig = $config;
+            $this->view->systemConfig = $config;
+        }
     }
 }

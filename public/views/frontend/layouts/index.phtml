@@ -2,12 +2,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>微信群</title>
+<title><?=$seoTitle?></title>
+<meta name="keywords" content="<?=$seoKeywords?>">
+<meta name="description" content="<?=$seoDesc?>">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <link href="/statics/plugins/layui/css/layui.css" rel="stylesheet">
 <link href="/statics/css/base.css" rel="stylesheet">
 <link href="/statics/css/site.css" rel="stylesheet">
 <script src="/statics/js/jquery.min.js"></script>
+<link rel="icon" href="/statics/img/favicon.ico" type="image/x-icon">
 </head>
 <body>
 <div class="layui-header header header-doc" winter="">
@@ -17,38 +20,49 @@
             </a>
             <ul class="layui-nav">
               <li class="layui-nav-item index"><a href="/">首页</a></li>
-                  <li class="layui-nav-item layui-this"><a href="<?=$this->url->get('wx/list');?>">列表</a></li>
+                  <li class="layui-nav-item layui-this"><a href="<?=$this->url->get('wx/list');?>">微信群</a></li>
                   <?php if(isset($userName)):?>
-				<li class="layui-nav-item"><a href="<?=$this->url->get('member/index');?>">欢迎,<span class="red"><?=$userName?></span></a></li>
-				<li class="layui-nav-item"><a href="<?=$this->url->get('login/logout');?>">退出</a></li>
+                <li class="layui-nav-item"><a href="<?=$this->url->get('member/index');?>">个人中心</a></li>
+				<li class="layui-nav-item"><a href="javascript:;"><span class="red"><?=$userName?></span></a>
+					<dl class="layui-nav-child">
+                      <dd><a href="<?=$this->url->get('login/logout');?>">退出</a></dd>
+                    </dl>
+				</li>
 				<?php else:?>
 				<li class="m-login layui-nav-item"><a href="<?=$this->url->get('login/index');?>">登录</a></li>
 				<li class="m-register layui-nav-item"><a href="<?=$this->url->get('login/register');?>">注册</a></li>
 				<?php endif;?>
-              
-            <span class="layui-nav-bar"></span></ul>
+              </ul>
           </div>
         </div>
 	<div class="wrap">
 		
 		<div class="layui-container">
+			<div class="layui-row">
             <?php echo $this->getContent(); ?>
+            </div>
         </div>
 	</div>
 
-<!-- 	<footer class="footer"> -->
-<!-- 		<div class="layui-container"> -->
-<!-- 			<p class="pull-left">&copy; My Application 2018</p> -->
+	<footer class="footer">
+		<div class="layui-container">
+			<p class="pull-left" style="float:left">Copyright &copy; <a href="http://<?=$systemConfig['host']?>"><?=$systemConfig['host']?></a></p>
 
-<!-- 			<p class="pull-right"> -->
-<!-- 				Powered by <a href="http://www.yiiframework.com/" rel="external">Yii -->
-<!-- 					Framework</a> -->
-<!-- 			</p> -->
-<!-- 		</div> -->
-<!-- 	</footer> -->
-
+			<p class="pull-right" style="float:right">
+				All Rights Reserved
+			</p>
+		</div>
+	</footer>
 	<script type="text/javascript">
 		$(function(){
+
+			layui.use('element', function(){
+				  var element = layui.element;
+				  
+				  //…
+				});
+
+			
 			var topActive = '<?=isset($topActive) ? $topActive : ''?>';
 			$('.layui-nav li').removeClass('layui-this');
 			if(topActive != '' && $('.layui-nav li.'+topActive).length > 0){
@@ -56,6 +70,7 @@
 			}else{
 				$('.layui-nav li.index').addClass('layui-this');
 			}
+
 		});
 	</script>
 	<script src="/statics/plugins/layui/layui.js"></script>

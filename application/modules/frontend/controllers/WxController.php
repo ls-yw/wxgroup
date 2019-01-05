@@ -26,6 +26,11 @@ class WxController extends BasicController
             die('<script>alert("数据不存在");history.go(-1)</script>');
         }
         
+        //记录查看次数
+        (new WxgroupLogic())->addPV($_SERVER['REMOTE_ADDR'], 'wxgroup', $id);
+        $info['pv']++;
+        
         $this->view->info = $info;
+        $this->view->categoryPairs = (new WxgroupLogic())->getCategoryPairs();
     }
 }
