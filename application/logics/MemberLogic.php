@@ -6,6 +6,7 @@ use Models\Member;
 use Library\Mail;
 use Phalcon\DI;
 use Library\Log;
+use Library\Redis;
 
 class MemberLogic extends BasicLogic 
 {
@@ -34,6 +35,17 @@ class MemberLogic extends BasicLogic
         return (new Mail())->sendEmail($user['email'], $subject, $message);
     }
     
+    public function sendForgetEmail($user, $host)
+    {
+        $key = $user['uniqid'].time().'forget';
+        $key = md5($key);
+        Redis::getInstance()->setex($key, 1200, json_encode($user));
+        $subject = '重置你的微信群密码';
+        $message = '您在微信群发起了找回密码, 请在20分钟内点击下面地址进行密码重置:<br/><a href="http://'.$host.DI::getDefault()->get('url')->get('login/resetPassword', ['token'=>$key]).'" style="font-weight:36px;">点我重置</a>';
+        Log::write('email', $user['email']."\n".$subject."\n".$message);
+        return (new Mail())->sendEmail($user['email'], $subject, $message);
+    }
+    
     public function addLogin($user)
     {
         $data = ['last_time'=>date('Y-m-d H:i:s'), 'count'=>$user['count'] + 1, 'last_ip'=>$_SERVER['REMOTE_ADDR']];
@@ -51,5 +63,12 @@ class MemberLogic extends BasicLogic
             DI::getDefault()->get('session')->set('user', $user);
         }
         return $r;
+    }
+    
+    public function setPassword($password, $user)
+    {
+        $uniqid = $user['uniqid'];
+        $data = ['password'=>md5(md5($password).$uniqid)];
+        return (new Member())->updateData($data, ['id'=>$user['id']]);
     }
 }

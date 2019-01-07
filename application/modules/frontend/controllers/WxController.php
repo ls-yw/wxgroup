@@ -16,6 +16,10 @@ class WxController extends BasicController
         $this->view->categoryId = $categoryId;
         $this->view->wxGroup    = $list;
         $this->view->topActive = 'm-list';
+        
+        $this->view->seoTitle    = '微信群列表-'.$this->systemConfig['seoTitle'];
+        $this->view->seoKeywords = '微信群,分享群,点赞群,微商群,互粉群';
+        $this->view->seoDesc     = '微信群列表';
     }
     
     public function detailAction()
@@ -33,5 +37,8 @@ class WxController extends BasicController
         
         $this->view->info = $info;
         $this->view->categoryPairs = (new WxgroupLogic())->getCategoryPairs();
+        $this->view->seoTitle    = $info['name'].$this->systemConfig['seoTitle'];
+        $this->view->seoKeywords = '微信群,分享群,点赞群,微商群,互粉群';
+        $this->view->seoDesc     = $info['desc'];
     }
 }

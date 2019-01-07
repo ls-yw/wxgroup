@@ -10,7 +10,7 @@ return new \Phalcon\Config([
         'database'  => require_once APP_PATH.'/config/database.php',
         'modules'   => require_once APP_PATH.'/config/modules.php',
         'logsPath'  => '/data/logs/'.APP_NAME.'/',
-        'viewsDir'  => BASE_PATH.'/public/views',
+        'viewsDir'  => APP_PATH.'/views',
 
         // This allows the baseUri to be understand project paths that are not in the root directory
         // of the webpspace.  This will break if the public/index.php entry point is moved or

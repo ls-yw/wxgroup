@@ -1,0 +1,46 @@
+<div class="layui-col-md12" style="height:40px;line-height:40px;">
+    <span class="layui-breadcrumb" style="visibility: visible;">
+      <a>位置：</a>
+      <a href="/">首页</a>
+      <span lay-separator="">/</span>
+      <a>注册</a>
+      <span lay-separator="">/</span>
+      <a><cite>忘记密码</cite></a>
+    </span>
+</div>
+<div class="c-body layui-col-md12">
+	<div class="layui-row">
+	<div class="layui-card-header">找回密码</div>
+	<div class="layui-card-body layui-row layui-col-space10">
+		<?php if($type == 2):?>
+		<div style="margin: 50px 10px;line-height:30px;">
+    		<p class="red"><?=$msg?></p>
+    	</div>
+		<?php else :?>
+		<form class="layui-form" action="<?=$this->url->get('login/forget', ['type'=>2]);?>" method="post">
+          <div class="layui-form-item">
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-inline">
+              <input type="text" name="email" id="email" required  lay-verify="required|email" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <div class="layui-input-block">
+              <button class="layui-btn" lay-submit lay-filter="formDemo">提交</button>
+            </div>
+          </div>
+        </form>
+        <?php endif;?>
+	</div>
+</div>
+</div>
+<script>
+$(function(){
+	layui.use('form', function(){
+		var form = layui.form;
+		  
+		  //监听提交
+		  form.on('submit(formDemo)', function(data){});
+		});
+});
+</script>

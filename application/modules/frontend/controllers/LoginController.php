@@ -4,11 +4,15 @@ namespace Modules\Frontend\Controllers;
 use Basic\BasicController;
 use Logics\MemberLogic;
 use Library\Log;
+use Library\Redis;
 
 class LoginController extends BasicController  
 {
     public function indexAction() {
         $this->view->topActive = 'm-login';
+        $this->view->seoTitle    = '登录-'.$this->systemConfig['seoTitle'];
+        $this->view->seoKeywords = '登录-'.$this->systemConfig['seoKeywords'];
+        $this->view->seoDesc     = '登录-'.$this->systemConfig['seoDesc'];
     }
     
     public function doLoginAction()
@@ -47,6 +51,9 @@ class LoginController extends BasicController
     
     public function registerAction()
     {
+        $this->view->seoTitle    = '注册-'.$this->systemConfig['seoTitle'];
+        $this->view->seoKeywords = '注册-'.$this->systemConfig['seoKeywords'];
+        $this->view->seoDesc     = '注册-'.$this->systemConfig['seoDesc'];
         $this->view->topActive = 'm-register';
     }
     
@@ -95,7 +102,7 @@ class LoginController extends BasicController
         $data['id'] = $uid;
         $this->session->set('user', $data);
         
-        (new MemberLogic())->sendActivateEmail($data, 'http://'.$this->systemConfig['host']);
+        (new MemberLogic())->sendActivateEmail($data, $this->systemConfig['host']);
         
         return $this->ajaxReturn(0, '注册成功，请去激活邮箱');
     }
@@ -143,5 +150,61 @@ class LoginController extends BasicController
     {
         $this->session->remove('user');
         return $this->response->redirect($this->url->get('index/index'));
+    }
+    
+    public function forgetAction()
+    {
+        $type = $this->request->getQuery('type', 'int', 1);
+        
+        if($type == 2){
+            $email = $this->request->getPost('email', 'string', '');
+            if(empty($email)){
+                $msg = '邮箱错误';
+            }else{
+                $user = (new MemberLogic())->getMemberByEmail($email);
+                if(!$user){
+                    $msg = '邮箱不存在';
+                }else{
+                    $row = (new MemberLogic())->sendForgetEmail($user, $this->systemConfig['host']);
+                    $msg = '找回密码链接地址已发送相关邮箱';
+                }
+            }
+        }
+        
+        $this->view->type = $type;
+        $this->view->msg  = $msg;
+    }
+    
+    public function resetPasswordAction()
+    {
+        $type = $this->request->getQuery('type', 'int', 1);
+        $token = $this->request->getQuery('token', 'string');
+        
+        if($type == 2 && $this->request->isPost()){
+            $password = $this->request->getPost('password');
+            if(empty($password) || strlen($password) < 6){
+                $this->view->msg = '密码不能小于6个字';
+            }else{
+                $user = Redis::getInstance()->get($token);
+                $user = json_decode($user, true);
+                $r = (new MemberLogic())->setPassword($password, $user);
+                if($r){
+                    Redis::getInstance()->del($token);
+                    $this->view->msg = '密码重置成功，请前往<a href="'.$this->url->get('login/index').'">登录</a>。';
+                }else{
+                    $this->view->msg = '密码重置失败，请联系管理员。';
+                }
+            }
+        }else{
+            if($token && $user = Redis::getInstance()->get($token)){
+                $user = json_decode($user, true);
+            }else{
+                $type = 2;
+                $this->view->msg = '该链接已失效。';
+            }
+        }
+        
+        $this->view->type = $type;
+        $this->view->token = $token;
     }
 }
